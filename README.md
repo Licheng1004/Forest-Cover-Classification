@@ -1,3 +1,5 @@
+[![CI/CD](https://github.com/Licheng1004/Forest-Cover-Classification/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Licheng1004/Forest-Cover-Classification/actions/workflows/ci.yml)
+
 # Forest Cover Type Classification
 
 Final Machine Learning II course project. The repository contains the final four-base-learner Stacking model, its report, and report figures; the intermediate model iterations are omitted.
@@ -28,3 +30,7 @@ Start Jupyter from the repository root, open `notebooks/final_stacking.ipynb`, a
 
 - [Final report (Markdown)](report/final_report.md)
 - [Final report (PDF)](report/final_report.pdf)
+
+## CI/CD
+
+The GitHub Actions workflow runs on pushes to `main`, pull requests, and manual dispatch. It validates the final notebook and fits a tiny XGBoost model on synthetic data; it does not need the Kaggle dataset. On a `v*` tag, it also publishes a GitHub Release with the source snapshot and the final report deliverables.
