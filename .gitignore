@@ -6,3 +6,9 @@ __pycache__/
 !/data/local/.gitkeep
 /outputs/*
 !/outputs/.gitkeep
+
+# Local environments and verification outputs
+.venv/
+__pycache__/
+.pytest_cache/
+.reproduction/

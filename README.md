@@ -1,36 +1,71 @@
-[![CI/CD](https://github.com/Licheng1004/Forest-Cover-Classification/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Licheng1004/Forest-Cover-Classification/actions/workflows/ci.yml)
-
 # Forest Cover Type Classification
 
-Final Machine Learning II course project. The repository contains the final four-base-learner Stacking model, its report, and report figures; the intermediate model iterations are omitted.
+[![CI](https://github.com/Licheng1004/Forest-Cover-Classification/actions/workflows/ci.yml/badge.svg)](https://github.com/Licheng1004/Forest-Cover-Classification/actions/workflows/ci.yml)
 
-## Final model
+Classify seven forest cover types using cartographic features and a heterogeneous stacking ensemble. This Machine Learning II course solution focuses on geographic feature engineering and complementary model behavior.
 
-The report describes 20 geographic feature additions (54 to 74 features) and a Stacking ensemble with Random Forest, Radius Neighbors, XGBoost, and Extra Trees as base learners, plus an XGBoost meta-learner with passthrough. The report records a Kaggle public leaderboard accuracy of **0.83966**.
+**Portfolio owner:** Licheng Xiong. **Stack:** Python, pandas, scikit-learn, XGBoost, Jupyter, GitHub Actions.
 
-## Data
+## Results and evidence
 
-Competition data are not included. Download them from the [Kaggle Forest Cover Type Prediction competition](https://www.kaggle.com/c/forest-cover-type-prediction) after signing in and accepting its rules. Place the files under `data/local/` with these names:
+The [final report](report/final_report.md) records **0.83966 public leaderboard accuracy**, using **20 engineered geographic features (54 → 74)**. This is a historical report result, not a score recomputed by the public smoke test.
 
-- `train.csv`
-- `test-full.csv` (rename Kaggle's `test.csv` to this name)
+![Stacking architecture](report/report_figures/fig09_stacking_architecture.png)
 
-The notebook writes its generated prediction file to `outputs/`, which is ignored by Git.
+- [Final stacking notebook](notebooks/final_stacking.ipynb)
+- [Full report](report/final_report.md) · [PDF report](report/final_report.pdf)
+- [Report figures](report/report_figures/)
 
-## Run
+## Project work
 
-```bash
-python -m pip install -r requirements.txt
-jupyter lab
+The repository publishes my final course implementation and its report, including the feature pipeline, stacking model, prediction export and reproducible repository packaging. The dataset/problem come from the course competition; I do not claim authorship of the competition or underlying ML libraries.
+
+The base learners are Random Forest, Radius Neighbors, XGBoost and Extra Trees. An XGBoost meta-learner uses the base predictions and original features through passthrough. Geographic features encode terrain, illumination and distance relationships; the report explains the feature choices and class confusion.
+
+## Reproduce the project
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then clone this repository. The committed `.python-version` selects Python 3.12.14; `pyproject.toml` and `uv.lock` lock the direct and transitive Python dependencies. First installation requires internet access.
+
+```sh
+git clone https://github.com/Licheng1004/Forest-Cover-Classification.git
+cd Forest-Cover-Classification
+uv sync --locked
+uv run --locked python -m jupyterlab
 ```
 
-Start Jupyter from the repository root, open `notebooks/final_stacking.ipynb`, and run its cells in order.
 
-## Report
 
-- [Final report (Markdown)](report/final_report.md)
-- [Final report (PDF)](report/final_report.pdf)
+### Verify the installation and published evidence
 
-## CI/CD
+```sh
+uv run --locked python scripts/verify.py
+uv run --locked python scripts/ci_smoke.py
+```
 
-The GitHub Actions workflow runs on pushes to `main`, pull requests, and manual dispatch. It validates the final notebook and fits a tiny XGBoost model on synthetic data; it does not need the Kaggle dataset. On a `v*` tag, it also publishes a GitHub Release with the source snapshot and the final report deliverables.
+`--locked` rejects stale project metadata instead of silently changing the dependency versions. Select `.venv` as the Jupyter kernel in VS Code. Notebook path detection supports execution from the repository root or a notebook subdirectory. Runtime installation and synthetic checks do not reproduce a private-data competition score.
+
+See [the reproducibility record](REPRODUCIBILITY.md) for the actual checks performed, their scope and any external prerequisites.
+
+## Data and complete model run
+
+Obtain the authorized challenge files using the [Kaggle Forest Cover source](https://www.kaggle.com/c/forest-cover-type-prediction), subject to its access and competition rules. The report references the DSAIB 2025–2026 course competition; exact course leaderboard reproduction requires that course's matching inputs and evaluation service.
+
+```text
+data/local/train.csv
+data/local/test-full.csv   # rename the corresponding test.csv
+```
+
+Run `notebooks/final_stacking.ipynb` from the locked environment. It produces `outputs/submission_stacking_4models.csv`. The public repository includes code, reports and figures; data and generated submissions are ignored. Stacking cross-validation and multiple ensemble learners can require substantial CPU time and RAM.
+
+## Repository map
+
+| Path | Purpose |
+| --- | --- |
+| `notebooks/final_stacking.ipynb` | Final features, learners, stacking and export |
+| `report/` | Methodology, final report and figures |
+| `scripts/` | Notebook verification and synthetic XGBoost training |
+| `data/local/`, `outputs/` | Local inputs and generated outputs |
+
+## Limitations and reuse
+
+The leaderboard score is tied to its original evaluation. The synthetic training check validates installation, not the ensemble's accuracy. Provider rules govern the data; this README grants no new reuse license.
